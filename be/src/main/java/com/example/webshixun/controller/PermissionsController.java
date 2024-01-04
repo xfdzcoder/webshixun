@@ -26,9 +26,7 @@ public class PermissionsController {
      */
     @GetMapping("/list")
     public Result<List<Permissions>> listArticle(@RequestParam("roleId") String roleId) {
-        List<Permissions> list = permissionsService.list(new LambdaQueryWrapper<Permissions>()
-                .eq(Permissions::getRoleId, roleId)
-                .eq(Permissions::getUseIt, 1));
+        List<Permissions> list = permissionsService.list(new LambdaQueryWrapper<Permissions>());
         return Result.success(list, "");
     }
 
@@ -62,6 +60,7 @@ public class PermissionsController {
         Permissions one = permissionsService.getById(id);
         one.setUseIt(0);
         permissionsService.updateById(one);
+        permissionsService.removeById(one.getId());
         return Result.success();
     }
 }

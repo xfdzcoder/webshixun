@@ -7,6 +7,7 @@ import {
   permissionPublishService,
   permissionGetDetailService
 } from '@/api/permission.js'
+import { ElMessage } from 'element-plus'
 
 // 控制抽屉显示隐藏
 const visibleDrawer = ref(false)
@@ -39,7 +40,7 @@ const onPublish = async () => {
   // 发请求
   if (!formModel.value.id) {
     // 添加操作
-    await permissionPublishService(fd)
+    await permissionPublishService(formModel.value)
     ElMessage.success('添加成功')
     visibleDrawer.value = false
     // 通知到父组件，添加成功了
@@ -72,7 +73,7 @@ defineExpose({
 </script>
 
 <template>
-  <el-drawer
+  <el-dialog
       v-model="visibleDrawer"
       :title="formModel.id ? '编辑权限' : '添加权限'"
       direction="rtl"
@@ -97,7 +98,7 @@ defineExpose({
         <el-button @click="onPublish" type="primary">添加</el-button>
       </el-form-item>
     </el-form>
-  </el-drawer>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
