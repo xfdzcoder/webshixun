@@ -1,0 +1,14 @@
+spring:
+  #main:
+    #allow-circular-references: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 200MB
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://115.159.49.90:1103/web_shixun
+      username: root
+      password: zrSGsql0827
