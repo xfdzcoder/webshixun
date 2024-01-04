@@ -19,7 +19,7 @@ export const userUpdateInfoService = ({ id,  email }) =>
     request.put('/user/email', { id, email })
 
 // 更新用户密码
-export const userUpdatePasswordService = ({ old_pwd, new_pwd, re_pwd, id }) =>
+export const userUpdatePasswordService = ({ oldPwd, newPwd, rePwd, id }) =>
   request.patch('/user/password', { oldPwd, newPwd, rePwd, id })
 
 //=========================================================================
