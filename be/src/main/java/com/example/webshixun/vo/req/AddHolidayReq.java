@@ -1,6 +1,8 @@
-package com.example.webshixun.dto.req;
+package com.example.webshixun.vo.req;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @author: ftt
@@ -19,9 +21,9 @@ public class AddHolidayReq {
     //请假事由
     private String bz;
     //开始时间
-    private String startTime;
+    private LocalDateTime startTime;
     //结束时间
-    private String endTime;
+    private LocalDateTime endTime;
     //申请状态，1：草稿，2：提交，
     private String status;
     //审批状态

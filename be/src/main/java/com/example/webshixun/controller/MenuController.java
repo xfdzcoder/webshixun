@@ -23,15 +23,11 @@ public class MenuController {
 
     /**
      * 查询所有数据
-     *
-     * @param
-     * @return 所有数据
      */
     @GetMapping("/list")
     public Result<List<Menu>> selectAll() {
-        LambdaQueryWrapper<Menu> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.orderByAsc(Menu::getCreateTime);
-        List<Menu> list = menuService.list(queryWrapper);
+        List<Menu> list = menuService.list(new LambdaQueryWrapper<Menu>()
+                .orderByAsc(Menu::getCreateTime));
         return Result.success(list,"");
     }
 

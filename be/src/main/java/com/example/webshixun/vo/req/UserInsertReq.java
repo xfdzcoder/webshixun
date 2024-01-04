@@ -1,4 +1,4 @@
-package com.example.webshixun.dto.req;
+package com.example.webshixun.vo.req;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -6,7 +6,7 @@ import lombok.Data;
 
 
 @Data
-public class InsertUserReq {
+public class UserInsertReq {
 
     //主键  在序列化时自动将该字段类型转为String类型返给前端
     @JsonSerialize(using = ToStringSerializer.class)

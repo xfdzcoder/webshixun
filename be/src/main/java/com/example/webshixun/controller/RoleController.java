@@ -3,16 +3,16 @@ package com.example.webshixun.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.webshixun.common.Result;
-import com.example.webshixun.dto.req.InsertRoleReq;
 import com.example.webshixun.entity.Menu;
 import com.example.webshixun.entity.Permissions;
 import com.example.webshixun.entity.Role;
 import com.example.webshixun.service.MenuService;
 import com.example.webshixun.service.PermissionsService;
 import com.example.webshixun.service.RoleService;
+import com.example.webshixun.vo.req.RoleInsertReq;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -32,50 +32,33 @@ public class RoleController {
 
     /**
      * 查询所有数据
-     *
-     * @param
-     * @return 所有数据
      */
     @GetMapping("/list")
     public Result<List<Role>> selectAll() {
-        LambdaQueryWrapper<Role> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.orderByAsc(Role::getCreateTime);
-        List<Role> list = roleService.list(queryWrapper);
+        List<Role> list = roleService.list(new LambdaQueryWrapper<Role>().orderByAsc(Role::getCreateTime));
         return Result.success(list, "");
     }
 
     /**
      * 新增角色
-     *
-     * @param role 实体对象
-     * @return 新增结果
      */
-    @PostMapping("/add")
-    public Result<String> insert(@RequestBody InsertRoleReq role, HttpServletRequest request) {
-
+    @PostMapping
+    public Result<String> insert(@RequestBody RoleInsertReq role) {
         Role role1 = new Role();
         role1.setId(role.getRoleId());
         role1.setName(role.getName());
-
-        try {
-            roleService.save(role1);
-
-            List<Menu> list = menuService.list();
-            for (int i = 0; i < list.size(); i++) {
-                Permissions permissions = new Permissions();
-                permissions.setRoleId(role.getRoleId());
-                permissions.setRoleName(role.getName());
-                permissions.setMenuId(list.get(i).getId());
-                permissions.setMenuName(list.get(i).getName());
-                permissions.setUseIt(0);
-                permissionsService.save(permissions);
-            }
-        } catch (Exception e) {
-            return Result.error("添加失败");
+        roleService.save(role1);
+        List<Menu> list = menuService.list();
+        for (Menu menu : list) {
+            Permissions permissions = new Permissions();
+            permissions.setRoleId(role.getRoleId());
+            permissions.setRoleName(role.getName());
+            permissions.setMenuId(menu.getId());
+            permissions.setMenuName(menu.getName());
+            permissions.setUseIt(0);
+            permissionsService.save(permissions);
         }
-
-            return Result.success("添加成功");
-
+        return Result.success();
     }
 
     /**

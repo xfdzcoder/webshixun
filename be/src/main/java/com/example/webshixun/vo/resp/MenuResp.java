@@ -1,4 +1,4 @@
-package com.example.webshixun.dto.resp;
+package com.example.webshixun.vo.resp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

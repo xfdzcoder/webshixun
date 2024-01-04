@@ -1,8 +1,10 @@
-package com.example.webshixun.dto.req;
+package com.example.webshixun.vo.req;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @author: ftt
@@ -23,9 +25,9 @@ public class UpdateHolidayReq {
     //请假事由
     private String bz;
     //开始时间
-    private String startTime;
+    private LocalDateTime startTime;
     //结束时间
-    private String endTime;
+    private LocalDateTime endTime;
     //申请状态，1：草稿，2：提交，
     private String status;
     //审批理由，同意：同意，驳回：驳回的理由

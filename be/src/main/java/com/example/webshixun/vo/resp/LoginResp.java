@@ -1,4 +1,4 @@
-package com.example.webshixun.dto.resp;
+package com.example.webshixun.vo.resp;
 
 
 import com.example.webshixun.entity.User;
@@ -15,7 +15,7 @@ public class LoginResp {
 
     private  String token;
 
-    private MenuResp menuResp;
+//    private MenuResp menuResp;
 
-    private String role;
+//    private String role;
 }
