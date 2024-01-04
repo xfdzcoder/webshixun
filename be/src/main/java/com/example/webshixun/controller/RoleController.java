@@ -63,17 +63,9 @@ public class RoleController {
 
     /**
      * 修改角色
-     *
-     * @param role 实体对象
-     * @return 修改结果
      */
-    @PutMapping("/info")
+    @PutMapping
     public Result<String> update(@RequestBody Role role) {
-        int count = roleService.count(new LambdaQueryWrapper<Role>()
-                .eq(Role::getId, role.getId()));
-        if (count == 0) {
-            return Result.error("角色不存在");
-        }
         roleService.updateById(role);
         LambdaQueryWrapper<Permissions> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Permissions::getRoleId,role.getId());
@@ -82,17 +74,14 @@ public class RoleController {
             per.setRoleName(role.getName());
             permissionsService.updateById(per);
         }
-        return Result.success("修改成功");
+        return Result.success();
     }
 
     /**
      * 删除记录
-     *
-     * @param id 主键结合
-     * @return 删除结果
      */
-    @DeleteMapping("/del")
-    public Result<String> delete(@RequestParam("id") Long id) {
+    @DeleteMapping("/{id}")
+    public Result<String> delete(@PathVariable("id") Long id) {
         roleService.removeById(id);
         LambdaQueryWrapper<Permissions> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Permissions::getRoleId,id);
@@ -100,9 +89,7 @@ public class RoleController {
         for (Permissions per : list ) {
             permissionsService.removeById(per);
         }
-        return Result.success("删除成功");
+        return Result.success();
     }
-
-
 }
 

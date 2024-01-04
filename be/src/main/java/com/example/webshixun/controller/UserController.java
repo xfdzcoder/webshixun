@@ -73,7 +73,7 @@ public class UserController {
     /**
      * 新增用户
      */
-    @PostMapping("")
+    @PostMapping
     public Result<String> insert(@RequestBody UserInsertReq userReq) {
         User user = new User();
         user.setAccount(userReq.getAccount());

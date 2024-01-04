@@ -60,7 +60,7 @@ public class EmployeeController {
     /**
      * 修改员工信息
      */
-    @PutMapping("/update")
+    @PutMapping
     public Result<String> update(@RequestBody EmployeeUpdateReq req) {
         Employee employee = employeeService.getById(req.getId());
         employee.setNo(req.getNo());
