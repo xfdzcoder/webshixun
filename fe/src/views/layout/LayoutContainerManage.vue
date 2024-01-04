@@ -16,27 +16,6 @@ import { useRouter } from 'vue-router'
 
 const userStore = useUserStore()
 const router = useRouter()
-const ok = useOKStore()
-
-const ok1 = ok.ok1
-const ok2 = ok.ok2
-const ok10 = ok.ok10
-const ok3 = ok.ok3
-const ok4 = ok.ok4
-const ok5 = ok.ok5
-const ok6 = ok.ok6
-const ok7 = ok.ok7
-const ok8 = ok.ok8
-const ok9 = ok.ok9
-const ok11 = ok.ok11
-const ok12 = ok.ok12
-
-
-onMounted(() => {
-  userStore.getUser()
-  ok.getok()
-
-})
 
 const handleCommand = async (key) => {
   if (key === 'logout') {
@@ -48,8 +27,7 @@ const handleCommand = async (key) => {
     })
 
     // 清除本地的数据 (token + user信息)
-    userStore.removeToken()
-    userStore.setUser({})
+    localStorage.removeItem("userId")
     ok.setok('')
     router.push('/login')
   } else {
@@ -127,7 +105,7 @@ const handleCommand = async (key) => {
         <el-dropdown placement="bottom-end" @command="handleCommand">
 <!--          展示给用户，默认看到的内容-->
           <span class="el-dropdown__box">
-            <el-avatar :src="userStore.user.userPic || avatar" />
+<!--            <el-avatar :src="userStore.user.userPic || avatar" />-->
             <el-icon><CaretBottom /></el-icon>
           </span>
 <!--          折叠的下拉部分-->

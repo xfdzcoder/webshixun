@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import java.text.ParseException;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("holiday")
 public class HolidayController {
