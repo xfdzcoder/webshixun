@@ -2,18 +2,8 @@
   <page-container title='权限管理'>
     <!-- 表单区域 -->
     <el-form inline>
-      <el-form-item label='角色:'>
-        <!-- Vue2 => v-model :value 和 @input 的简写 -->
-        <!-- Vue3 => v-model :modelValue 和 @update:modelValue 的简写 -->
-        <role-select v-model='params.roleId'></role-select>
-
-        <!-- Vue3 => v-model:cid  :cid 和 @update:cid 的简写 -->
-        <!-- <channel-select v-model:cid="params.cate_id"></channel-select> -->
-      </el-form-item>
-
       <el-form-item>
-        <el-button @click='onSearch' type='primary'>搜索</el-button>
-        <el-button @click='onReset'>重置</el-button>
+
         <el-button type='primary' @click='onAddPermission'>添加权限</el-button>
       </el-form-item>
     </el-form>
@@ -32,20 +22,6 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <!-- 分页区域 -->
-    <el-pagination
-      v-model:current-page='params.pagenum'
-      v-model:page-size='params.pagesize'
-      :page-sizes='[2, 3, 5, 10]'
-      :background='true'
-      layout='jumper, total, sizes, prev, pager, next'
-      :total='total'
-      @size-change='onSizeChange'
-      @current-change='onCurrentChange'
-      style='margin-top: 20px; justify-content: flex-end'
-    />
-
     <!-- 添加编辑的抽屉 -->
     <permission-edit ref='permissionEditRef' @success='onSuccess'></permission-edit>
   </page-container>
@@ -75,7 +51,8 @@ const getPermissionList = () => {
   loading.value = true
   permissionGetListService(params.value)
     .then(res => {
-      permissionList.value = res.data.data.records
+      console.log("获取到权限信息",res)
+      permissionList.value = res.data.data
       total.value = res.data.data.total
     })
     .finally(() => {
