@@ -1,26 +1,22 @@
 <script setup>
-import {onMounted,ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import ConfigSelect from './ConfigSelect.vue'
 // import { Plus } from '@element-plus/icons-vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
-import {
-  holidayPublishService,
-  holidayGetDetailService,
-  holidayEditService,
-  holidayEditService1
-} from '@/api/holiday.js'
-import {useOKStore,useUserStore} from "@/stores/index.js";
+import { holidayEditService, holidayGetDetailService, holidayPublishService } from '@/api/holiday.js'
+import { useOKStore, useUserStore } from '@/stores/index.js'
+import { ElMessage } from 'element-plus'
 // 控制抽屉显示隐藏
 const visibleDrawer = ref(false)
 const useOK = useOKStore()
 const userStore = useUserStore()
 const flag = ref(false)
 onMounted(() => {
-if (useOK.ok8 || useOK.ok9) {
-  flag.value = true
-}else {
-  flag.value = false
+  if (useOK.ok8 || useOK.ok9) {
+    flag.value = true
+  } else {
+    flag.value = false
 }
 })
 // 默认数据
@@ -54,19 +50,11 @@ const onPublish = async (state) => {
 
   // 发请求
   if (formModel.value.id) {
-    if (useOK.ok8 || useOK.ok9) {
-      // 编辑操作
-      await holidayEditService1(fd)
-      ElMessage.success('修改成功')
-      visibleDrawer.value = false
-      emit('success', 'edit')
-    }else {
       // 编辑操作
       await holidayEditService(fd)
       ElMessage.success('修改成功')
       visibleDrawer.value = false
       emit('success', 'edit')
-    }
   } else {
     // 添加操作
     await holidayPublishService(fd)
@@ -103,58 +91,58 @@ defineExpose({
 </script>
 
 <template>
-  <el-drawer
-      v-model="visibleDrawer"
-      :title="formModel.id ? '编辑请假' : '添加请假'"
-      direction="rtl"
-      size="50%"
+  <el-dialog
+    v-model='visibleDrawer'
+    :title="formModel.id ? '编辑请假' : '添加请假'"
+    direction='rtl'
+    size='50%'
   >
     <!-- 请假表单 -->
-    <el-form :model="formModel" ref="formRef" label-width="100px">
-      <el-form-item label="请假编号" prop="no" v-if="!flag">
-        <el-input v-model="formModel.no" placeholder="请输入请假编号" ></el-input>
+    <el-form :model='formModel' ref='formRef' label-width='100px'>
+      <el-form-item label='请假编号' prop='no'>
+        <el-input v-model='formModel.no' placeholder='请输入请假编号'></el-input>
       </el-form-item>
       <el-form-item label="申请人" prop="userNo">
         <el-input v-model="formModel.userNo" placeholder="请输入申请人" disabled></el-input>
       </el-form-item>
-      <el-form-item label="请假类型" prop="typeId" v-if="!flag">
+      <el-form-item label='请假类型' prop='typeId'>
         <config-select
-            v-model="formModel.typeId"
-            width="100%"
+          v-model='formModel.typeId'
+          width='100%'
         ></config-select>
       </el-form-item>
-      <el-form-item label="请假事由" prop="bz" v-if="!flag">
-        <div class="editor" >
+      <el-form-item label='请假事由' prop='bz'>
+        <div class='editor'>
           <quill-editor
-              ref="editorRef"
-              v-model:content="formModel.bz"
-              content-type="html"
-              theme="snow"
+            ref='editorRef'
+            v-model:content='formModel.bz'
+            content-type='html'
+            theme='snow'
           ></quill-editor>
         </div>
       </el-form-item>
-      <el-form-item label="开始时间" prop="startTime" v-if="!flag">
+      <el-form-item label='开始时间' prop='startTime'>
         <el-date-picker
-            v-model="formModel.startTime"
-            type="datetime"
-            placeholder="请选择开始时间" />
+          v-model='formModel.startTime'
+          type='datetime'
+          placeholder='请选择开始时间' />
       </el-form-item>
-      <el-form-item label="结束时间" prop="endTime" v-if="!flag">
+      <el-form-item label='结束时间' prop='endTime'>
         <el-date-picker
-            v-model="formModel.endTime"
-            type="datetime"
-            placeholder="请选择结束时间" />
+          v-model='formModel.endTime'
+          type='datetime'
+          placeholder='请选择结束时间' />
       </el-form-item>
-      <el-form-item label="审批状态" prop="noAgree" v-if="flag">
-        <el-input v-model="formModel.noAgree" placeholder="请输入审批理由，同意或驳回" ></el-input>
+      <el-form-item label='审批状态' prop='noAgree' v-if='flag'>
+        <el-input v-model='formModel.noAgree' placeholder='请输入审批理由，同意或驳回'></el-input>
       </el-form-item>
 
       <el-form-item>
-        <el-button @click="onPublish('已提交')" type="primary">提交</el-button>
-        <el-button @click="onPublish('草稿')" type="info" v-if="!flag">草稿</el-button>
+        <el-button @click="onPublish('已提交')" type='primary'>提交</el-button>
+        <el-button @click="onPublish('草稿')" type='info'>草稿</el-button>
       </el-form-item>
     </el-form>
-  </el-drawer>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>

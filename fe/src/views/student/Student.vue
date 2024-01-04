@@ -2,9 +2,9 @@
   <div>
     <h1>学生管理</h1>
 
-    <el-button type="primary" @click="showDialog(null)">新增学生</el-button>
+    <el-button type="primary" @click="showDialog(null)" style='margin-left: 500px'>新增学生</el-button>
 
-    <el-table :data="table.records">
+    <el-table :data="table.records"       border style='width: 100%'>
       <el-table-column label="学号" prop="no" />
       <el-table-column label="姓名" prop="name" />
       <el-table-column label="班级编号" prop="classNo" />
@@ -14,34 +14,19 @@
       <el-table-column label="联系方式" prop="phone" />
       <el-table-column label="家庭住址" prop="address" />
       <el-table-column label="创建时间" prop="createTime" />
-      <el-table-column label="操作" width="150">
+      <el-table-column label="操作" >
         <template #default="{ row, $index }">
           <el-button
-            :icon="Edit"
-            circle
-            plain
             type="primary"
             @click="showDialog(row, $index)"
-          ></el-button>
+          >编辑</el-button>
           <el-button
-            :icon="Delete"
-            circle
-            plain
             type="danger"
             @click="del(row, $index)"
-          ></el-button>
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-
-    <el-pagination
-      :page-size="table.size"
-      :total="table.total"
-      :current-page="table.current"
-      @size-change="listAll"
-      @current-change="listAll"
-    />
-
     <el-dialog
       v-model="dialog.visible"
       :title="dialog.title"

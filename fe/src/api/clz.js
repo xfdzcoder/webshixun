@@ -1,7 +1,7 @@
 import request from '@/utils/request.js'
 
 export const list = (data) => {
-  return request.post('/clz/list', data)
+  return request.post('/clz/list')
 }
 
 export const edit = (data) => {

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { EditDeptService, addDeptService } from '@/api/dept.js'
+import { ElMessage } from 'element-plus'
 const dialogVisible = ref(false)
 const formRef = ref()
 const formModel = ref({

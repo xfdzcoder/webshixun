@@ -1,10 +1,10 @@
 <script setup>
-import { userRegisterService, userLoginService } from '@/api/user.js'
-import { User, Lock } from '@element-plus/icons-vue'
+import { userLoginService, userRegisterService } from '@/api/user.js'
+import { Lock, User } from '@element-plus/icons-vue'
 import { ref, watch } from 'vue'
-import { useUserStore, useOKStore } from '@/stores'
+import { useOKStore, useUserStore } from '@/stores'
 import { useRouter } from 'vue-router'
-import { storeToRefs } from 'pinia'
+import { ElMessage } from 'element-plus'
 
 const isRegister = ref(true)
 const form = ref()
@@ -76,70 +76,8 @@ const ok = useOKStore()
 const login = async () => {
   await form.value.validate()
   const res = await userLoginService(formModel.value)
-  userStore.setToken(res.data.data.token)
-  userStore.setRole(res.data.data.role)
-
+  localStorage.setItem('userId', res.data.data.user.id)
   ElMessage.success('登录成功！！！')
-  if (res.data.data.menuResp.dept !== '1') {
-    ok.ok1 = false
-  } else {
-    ok.ok1 = true
-  }
-  if (res.data.data.menuResp.employee !== '1') {
-    ok.ok2 = false
-  } else {
-    ok.ok2 = true
-  }
-  if (res.data.data.menuResp.userManger !== '1') {
-    ok.ok10 = false
-  } else {
-    ok.ok10 = true
-  }
-  if (res.data.data.menuResp.holiday !== '1') {
-    ok.ok3 = false
-  } else {
-    ok.ok3 = true
-  }
-  if (res.data.data.menuResp.reimburse !== '1') {
-    ok.ok4 = false
-  } else {
-    ok.ok4 = true
-  }
-  if (res.data.data.menuResp.email !== '1') {
-    ok.ok5 = false
-  } else {
-    ok.ok5 = true
-  }
-  if (res.data.data.menuResp.avatar !== '1') {
-    ok.ok6 = false
-  } else {
-    ok.ok6 = true
-  }
-  if (res.data.data.menuResp.password !== '1') {
-    ok.ok7 = false
-  } else {
-    ok.ok7 = true
-  }
-  if (res.data.data.menuResp.role !== '1') {
-    ok.ok8 = false
-  } else {
-    ok.ok8 = true
-  }
-  if (res.data.data.menuResp.permission !== '1') {
-    ok.ok9 = false
-  } else {
-    ok.ok9 = true
-  }
-  if (res.data.data.menuResp.clz !== '1') {
-    ok.ok11 = false
-  } else {
-    ok.ok11 = true
-  }
-  if (res.data.data.menuResp.student !== '1') {
-    ok.ok12 = false
-  } else {
-    ok.ok12 = true
-  }
   router.push('/')
 }
 

@@ -27,8 +27,8 @@ const router = createRouter({
 
       children: [
         {
-          path: '/dept',
-          component: () => import('@/views/dept/Dept.vue')
+          path: '/department',
+          component: () => import('@/views/department/Dept.vue')
         },
         {
           path: '/employee',
@@ -50,10 +50,6 @@ const router = createRouter({
         {
           path: '/user/email',
           component: () => import('@/views/user/UserProfile.vue')
-        },
-        {
-          path: '/user/avatar',
-          component: () => import('@/views/user/UserAvatar.vue')
         },
         {
           path: '/user/password',
@@ -91,11 +87,11 @@ const router = createRouter({
 // 2. false 拦回from的地址页面
 // 3. 具体路径 或 路径对象  拦截到对应的地址
 //    '/login'   { name: 'login' }
-router.beforeEach((to) => {
+/*router.beforeEach((to) => {
   // 如果没有token, 且访问的是非登录页，拦截到登录，其他情况正常放行
   const useStore = useUserStore()
   if (!useStore.token && to.path !== '/login') return '/login'
 
-})
+})*/
 
 export default router

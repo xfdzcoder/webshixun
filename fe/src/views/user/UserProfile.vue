@@ -1,3 +1,23 @@
+<template>
+
+    <!-- 表单部分 -->
+    <div >
+      <page-container title="基本资料" >
+        <el-form ref="formRef" :model="form" :rules="rules" label-width="100px" style='width: 300px;margin: auto'>
+          <el-form-item label="用户名">
+            <el-input v-model="form.account" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="邮箱地址" prop="email">
+            <el-input v-model="form.email"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm">提交修改</el-button>
+          </el-form-item>
+        </el-form>
+      </page-container>
+    </div>
+
+</template>
 <script setup>
 import PageContainer from '@/components/PageContainer.vue'
 import { ref } from 'vue'
@@ -41,19 +61,4 @@ const submitForm = async () => {
 }
 
 </script>
-<template>
-  <page-container title="基本资料">
-    <!-- 表单部分 -->
-    <el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
-      <el-form-item label="登录名称">
-        <el-input v-model="form.account" disabled></el-input>
-      </el-form-item>
-      <el-form-item label="用户邮箱" prop="email">
-        <el-input v-model="form.email"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submitForm">提交修改</el-button>
-      </el-form-item>
-    </el-form>
-  </page-container>
-</template>
+
