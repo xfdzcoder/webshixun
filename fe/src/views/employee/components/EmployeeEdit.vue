@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import DeptSelect from './DeptSelect.vue'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import { employeeEditService, employeeGetDetailService, employeePublishService } from '@/api/employee.js'
+import {ElMessage} from "element-plus";
 
 // 控制抽屉显示隐藏
 const visibleDrawer = ref(false)
@@ -28,21 +29,17 @@ const emit = defineEmits(['success'])
 const onPublish = async () => {
   // 注意：当前接口，需要的是 formData 对象
   // 将普通对象 => 转换成 => formData对象
-  const fd = new FormData()
-  for (let key in formModel.value) {
-    fd.append(key, formModel.value[key])
-  }
 
   // 发请求
   if (formModel.value.id) {
     // 编辑操作
-    await employeeEditService(fd)
+    await employeeEditService(formModel.value)
     ElMessage.success('修改成功')
     visibleDrawer.value = false
     emit('success', 'edit')
   } else {
     // 添加操作
-    await employeePublishService(fd)
+    await employeePublishService(formModel.value)
     ElMessage.success('添加成功')
     visibleDrawer.value = false
     // 通知到父组件，添加成功了

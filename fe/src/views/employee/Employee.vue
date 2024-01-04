@@ -57,8 +57,6 @@ const loading = ref(false) // loading状态
 
 // 定义请求参数对象
 const params = ref({
-  pagenum: 1, // 当前页
-  pagesize: 5, // 当前生效的每页条数
   deptId: ''
 })
 
@@ -67,8 +65,7 @@ const getEmployeeList = () => {
   loading.value = true
   employeeGetListService(params.value)
     .then(res => {
-      employeeList.value = res.data.data.records
-      total.value = res.data.data.total
+      employeeList.value = res.data.data
     })
     .finally(() => {
       loading.value = false
