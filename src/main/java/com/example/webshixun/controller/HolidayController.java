@@ -2,28 +2,24 @@ package com.example.webshixun.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.webshixun.common.Result;
-import com.example.webshixun.dto.req.AddHolidayReq;
-import com.example.webshixun.dto.req.UpdateHolidayReq;
-import com.example.webshixun.dto.resp.HolidayResp;
 import com.example.webshixun.entity.Config;
 import com.example.webshixun.entity.Holiday;
 import com.example.webshixun.service.ConfigService;
 import com.example.webshixun.service.HolidayService;
-import com.sun.xml.internal.bind.v2.TODO;
-import org.springframework.boot.jta.atomikos.AtomikosDependsOnBeanFactoryPostProcessor;
+import com.example.webshixun.vo.req.AddHolidayReq;
+import com.example.webshixun.vo.req.UpdateHolidayReq;
+import com.example.webshixun.vo.resp.HolidayResp;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.regex.Pattern;
+import java.util.List;
 
 @RestController
 @RequestMapping("holiday")
 public class HolidayController {
+
     /**
      * 服务对象
      */
@@ -35,100 +31,65 @@ public class HolidayController {
 
     /**
      * 获取假期列表
-     * @param
-     * @return
      */
     @GetMapping("/list")
-    public Result<Page<Holiday>> listHoliday(@RequestParam("pagenum") Integer pagenum,
-                                             @RequestParam("pagesize") Integer pagesize,
-                                             @RequestParam("typeId") String typeId,
+    public Result<List<Holiday>> listHoliday(@RequestParam("typeId") String typeId,
                                              @RequestParam("status") String status,
                                              @RequestParam("userNo") String userNo) {
-
-        //分页构造器
-        Page<Holiday> pageInfo = new Page<>(pagenum, pagesize);
-        LambdaQueryWrapper<Holiday> queryWrapper = new LambdaQueryWrapper<Holiday>()
+        List<Holiday> list = holidayService.list(new LambdaQueryWrapper<Holiday>()
                 .eq(! "".equals(typeId), Holiday::getTypeId,typeId)
                 .eq(! "".equals(status), Holiday::getStatus,status)
-                .eq(! "".equals(userNo),Holiday::getUserNo,userNo);
-        Page<Holiday> page = holidayService.page(pageInfo, queryWrapper);
-        return Result.success(page, "", page.getTotal());
+                .eq(!"".equals(userNo), Holiday::getUserNo, userNo));
+        return Result.success(list, "");
 
     }
     /**
      * 获取假期列表
-     * @param
-     * @return
      */
     @GetMapping("/list1")
-    public Result<Page<Holiday>> list1Holiday(@RequestParam("pagenum") Integer pagenum,
-                                             @RequestParam("pagesize") Integer pagesize,
-                                             @RequestParam("typeId") String typeId,
+    public Result<List<Holiday>> list1Holiday(@RequestParam("typeId") String typeId,
                                              @RequestParam("status") String status) {
 
-        //分页构造器
-        Page<Holiday> pageInfo = new Page<>(pagenum, pagesize);
-        LambdaQueryWrapper<Holiday> queryWrapper = new LambdaQueryWrapper<Holiday>()
+        List<Holiday> list = holidayService.list(new LambdaQueryWrapper<Holiday>()
                 .eq(! "".equals(typeId), Holiday::getTypeId,typeId)
-                .eq(! "".equals(status), Holiday::getStatus,status);
-        Page<Holiday> page = holidayService.page(pageInfo, queryWrapper);
-        return Result.success(page, "", page.getTotal());
+                .eq(!"".equals(status), Holiday::getStatus, status));
+        return Result.success(list, "");
 
     }
 
     /**
      * 新增请假
      *
-     * @param addHolidayReq 实体对象
+     * @param req 实体对象
      * @return 新增结果
      */
-    @PostMapping("/add")
-    public Result<String> insert(AddHolidayReq addHolidayReq) throws ParseException {
+    @PostMapping
+    public Result<String> insert(@RequestBody AddHolidayReq req) throws ParseException {
 
-//        Holiday holiday = new Holiday();
-//        holiday.setNo(addHolidayReq.getNo());
-//        holiday.setUserNo(addHolidayReq.getUserNo());
-//        Integer typeId = Integer.valueOf(addHolidayReq.getTypeId());
-//        holiday.setTypeId(typeId);
-//        holiday.setBz(addHolidayReq.getBz());
-//        String startTime = addHolidayReq.getStartTime();
-//        String endTime = addHolidayReq.getEndTime();
-//        //需要转成的格式
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        SimpleDateFormat format1 = new SimpleDateFormat("E MMM dd yyyy HH:mm:ss z", Locale.US);
-//        //开始时间 和结束时间将中国标准时间格式化为yyyy-MM-dd HH:mm:ss
-//        String metBeginTemp = startTime.split(Pattern.quote("(中国标准时间)"))[0].replace("GMT+0800", "GMT+08:00");
-//        startTime=format.format(format1.parse(metBeginTemp));
-//        String endTimeTemp = endTime.split(Pattern.quote("(中国标准时间)"))[0].replace("GMT+0800", "GMT+08:00");
-//        endTime=format.format(format1.parse(endTimeTemp));
-//
-//        holiday.setStartTime(startTime);
-//        holiday.setEndTime(endTime);
-//        holiday.setStatus(addHolidayReq.getStatus());
-//        holiday.setNoAgree(addHolidayReq.getNoAgree());
-//
-//        boolean save = holidayService.save(holiday);
-//        if (!save) {
-//            return Result.error("添加失败");
-//        }
-//        return Result.success("添加成功");
-        // TODO
-        return null;
+        Holiday holiday = new Holiday();
+        holiday.setNo(req.getNo());
+        holiday.setUserNo(req.getUserNo());
+        Integer typeId = Integer.valueOf(req.getTypeId());
+        holiday.setTypeId(typeId);
+        holiday.setBz(req.getBz());
+        holiday.setStartTime(req.getStartTime());
+        holiday.setEndTime(req.getEndTime());
+        holiday.setStatus(req.getStatus());
+        holiday.setNoAgree(req.getNoAgree());
+        holidayService.save(holiday);
+        return Result.success("添加成功");
     }
 
 
     /**
      * 获取请假基本信息
-     * @param id
-     * @return
      */
-    @GetMapping("/info")
-    public Result<HolidayResp> getHolidayDetail(@RequestParam("id") String id) {
+    @GetMapping("/{id}")
+    public Result<HolidayResp> getHolidayDetail(@PathVariable("id") Long id) {
         Holiday holiday = holidayService.getById(id);
         Integer typeId = holiday.getTypeId();
-        LambdaQueryWrapper<Config> queryWrapper = new LambdaQueryWrapper<Config>();
-        queryWrapper.eq(Config::getId,typeId);
-        Config one = configService.getOne(queryWrapper);
+        Config one = configService.getOne(new LambdaQueryWrapper<Config>()
+                .eq(Config::getId, typeId));
         String name = one.getName();
 
         HolidayResp holidayResp = new HolidayResp();
@@ -137,9 +98,8 @@ public class HolidayController {
         holidayResp.setUserNo(holiday.getUserNo());
         holidayResp.setTypeId(name);
         holidayResp.setBz(holiday.getBz());
-        // TODO
-//        holidayResp.setStartTime(holiday.getStartTime());
-//        holidayResp.setEndTime(holiday.getEndTime());
+        holidayResp.setStartTime(holiday.getStartTime());
+        holidayResp.setEndTime(holiday.getEndTime());
         holidayResp.setStatus(holiday.getStatus());
         holidayResp.setNoAgree(holiday.getNoAgree());
 
@@ -148,66 +108,33 @@ public class HolidayController {
 
     /**
      * 修改请假信息
-     *
-     * @param updateHoliday 实体对象
-     * @return 修改结果
      */
-    @PutMapping("/update")
-    public Result<String> update( UpdateHolidayReq updateHoliday) {
+    @PutMapping
+    public Result<String> update(@RequestBody UpdateHolidayReq updateHoliday) {
         Holiday holiday = holidayService.getById(updateHoliday.getId());
         holiday.setNo(updateHoliday.getNo());
         holiday.setUserNo(updateHoliday.getUserNo());
-//        Integer typeId = Integer.valueOf(updateHoliday.getTypeId());
-//        holiday.setTypeId(typeId);
-        LambdaQueryWrapper<Config> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Config::getName,updateHoliday.getTypeId());
-        Config one = configService.getOne(queryWrapper);
-        String s = one.getId() + "";
-        Integer aLong = Integer.valueOf(s);
-        holiday.setTypeId(aLong);
+        Integer typeId = Integer.valueOf(updateHoliday.getTypeId());
+        holiday.setTypeId(typeId);
+        Config one = configService.getOne(new LambdaQueryWrapper<Config>()
+                .eq(Config::getName, updateHoliday.getTypeId()));
+        holiday.setTypeId(Integer.parseInt(String.valueOf(one.getId())));
         holiday.setBz(updateHoliday.getBz());
-        // TODO
-//        holiday.setStartTime(updateHoliday.getStartTime());
-//        holiday.setEndTime(updateHoliday.getEndTime());
+        holiday.setStartTime(updateHoliday.getStartTime());
+        holiday.setEndTime(updateHoliday.getEndTime());
         holiday.setStatus(updateHoliday.getStatus());
-
-        boolean save = holidayService.updateById(holiday);
-        if (!save) {
-            return Result.error("修改失败");
-        }
-        return Result.success("修改成功");
-    }
-
-    /**
-     * 修改请假信息1
-     *
-     * @param updateHoliday 实体对象
-     * @return 修改结果
-     */
-    @PutMapping("/update1")
-    public Result<String> update1( UpdateHolidayReq updateHoliday) {
-        Holiday holiday = holidayService.getById(updateHoliday.getId());
-        holiday.setNoAgree(updateHoliday.getNoAgree());
-
-        boolean save = holidayService.updateById(holiday);
-        if (!save) {
-            return Result.error("修改失败");
-        }
+        holidayService.updateById(holiday);
         return Result.success("修改成功");
     }
 
     /**
      * 删除假期
-     *
-     * @param id 主键结合
-     * @return 删除结果
      */
     @DeleteMapping("/delete")
     public Result<String> delete(@RequestParam("id") Long id) {
         holidayService.removeById(id);
         return Result.success("删除成功");
     }
-
 
 }
 

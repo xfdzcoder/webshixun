@@ -1,13 +1,11 @@
-package com.example.webshixun.dto.req;
+package com.example.webshixun.vo.req;
 
 import lombok.Data;
 
 
 @Data
-public class UpdateEmployeeReq {
+public class EmployeeInsertReq {
 
-    //主键
-    private Long id;
 
     //员工编号，唯一
     private String no;
@@ -23,4 +21,5 @@ public class UpdateEmployeeReq {
 
     //入职时间
     private String entryTime;
+
 }

@@ -18,7 +18,7 @@ public class Result<T> {
 
     private T data; //数据
 
-    private Map map = new HashMap(); //动态数据
+    private Map<Object, Object> map = new HashMap<>(); //动态数据
 
     private Long total; //记录总条数
 
@@ -58,7 +58,7 @@ public class Result<T> {
     }
 
     public static <T> Result<T> error(String str) {
-        Result r = new Result();
+        Result<T> r = new Result<>();
         r.message = str;
         r.code = 1;
         return r;
