@@ -1,10 +1,54 @@
+<template>
+  <page-container title='员工管理'>
+    <div style='margin-left: 400px'>
+      <el-form inline>
+        <el-form-item label='部门:'>
+          <dept-select v-model='params.deptId'></dept-select>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button @click='onSearch' type='primary'>搜索</el-button>
+          <el-button @click='onAddEmployee' type='primary'>添加员工</el-button>
+        </el-form-item>
+
+      </el-form>
+
+    </div>
+
+
+    <!-- 表格区域 -->
+    <el-table :data='employeeList' border style='width: 100%'>
+      <el-table-column label='员工编号' prop='no' />
+      <el-table-column label='员工姓名' prop='name' />
+      <el-table-column label='性别' prop='sex' />
+      <el-table-column label='部门ID' prop='deptId' />
+      <el-table-column label='入职时间' prop='entryTime' />
+      <!-- 利用作用域插槽 row 可以获取当前行的数据 => v-for 遍历 item -->
+      <el-table-column label='操作'>
+        <template #default='{ row }'>
+          <el-button
+            type='primary'
+            @click='onEditEmployee(row)'
+          >编辑
+          </el-button>
+          <el-button
+            type='danger'
+            @click='onDeleteEmployee(row)'
+          >删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <!-- 添加编辑的抽屉 -->
+    <employee-edit ref='employeeEditRef' @success='onSuccess'></employee-edit>
+  </page-container>
+</template>
+
 <script setup>
-import {ref, onMounted} from 'vue'
-import {Delete,Edit} from '@element-plus/icons-vue'
+import { onMounted, ref } from 'vue'
 import DeptSelect from './components/DeptSelect.vue'
 import EmployeeEdit from './components/EmployeeEdit.vue'
-import {employeeGetListService, employeeDelService} from '@/api/employee.js'
-import {formatTime} from '@/utils/format.js'
+import { employeeDelService, employeeGetListService } from '@/api/employee.js'
 
 
 const employeeList = ref([]) // 员工列表
@@ -22,13 +66,13 @@ const params = ref({
 const getEmployeeList = () => {
   loading.value = true
   employeeGetListService(params.value)
-      .then(res => {
-        employeeList.value = res.data.data.records
-        total.value = res.data.data.total
-      })
-      .finally(() => {
-        loading.value = false
-      })
+    .then(res => {
+      employeeList.value = res.data.data.records
+      total.value = res.data.data.total
+    })
+    .finally(() => {
+      loading.value = false
+    })
   // const res = await employeeGetListService(params.value)
   // employeeList.value = res.data.data
   // total.value = res.data.data.total
@@ -107,89 +151,5 @@ onMounted(() => {
 })
 </script>
 
-<template>
-  <page-container title="员工管理">
-    <template #extra>
-      <el-button @click="onAddEmployee">添加员工</el-button>
-    </template>
-
-    <!-- 表单区域 -->
-    <el-form inline>
-      <el-form-item label="部门:">
-        <!-- Vue2 => v-model :value 和 @input 的简写 -->
-        <!-- Vue3 => v-model :modelValue 和 @update:modelValue 的简写 -->
-        <dept-select v-model="params.deptId"></dept-select>
-
-        <!-- Vue3 => v-model:cid  :cid 和 @update:cid 的简写 -->
-        <!-- <channel-select v-model:cid="params.cate_id"></channel-select> -->
-      </el-form-item>
-
-      <el-form-item>
-        <el-button @click="onSearch" type="primary">搜索</el-button>
-        <el-button @click="onReset">重置</el-button>
-      </el-form-item>
-    </el-form>
-
-    <!-- 表格区域 -->
-    <el-table :data="employeeList" v-loading="loading">
-      <el-table-column label="员工编号" prop="no">
-        <template #default="{ row }">
-          <el-link type="primary" :underline="false">{{ row.no }}</el-link>
-        </template>
-      </el-table-column>
-      <el-table-column label="员工姓名" prop="name">
-        <template #default="{ row }">
-          <el-link type="primary" :underline="false">{{ row.name }}</el-link>
-        </template>
-      </el-table-column>
-      <el-table-column label="性别" prop="sex">
-        <template #default="{ row }">
-          <el-link type="primary" :underline="false">{{ row.sex }}</el-link>
-        </template>
-      </el-table-column>
-      <el-table-column label="部门ID" prop="deptId"></el-table-column>
-      <el-table-column label="入职时间" prop="entryTime">
-        <template #default="{ row }">
-          {{ formatTime(row.entryTime) }}
-        </template>
-      </el-table-column>
-      <!-- 利用作用域插槽 row 可以获取当前行的数据 => v-for 遍历 item -->
-      <el-table-column label="操作">
-        <template #default="{ row }">
-          <el-button
-              :icon="Edit"
-              circle
-              plain
-              type="primary"
-              @click="onEditEmployee(row)"
-          ></el-button>
-          <el-button
-              circle
-              plain
-              type="danger"
-              :icon="Delete"
-              @click="onDeleteEmployee(row)"
-          ></el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <!-- 分页区域 -->
-    <el-pagination
-        v-model:current-page="params.pagenum"
-        v-model:page-size="params.pagesize"
-        :page-sizes="[2, 3, 5, 10]"
-        :background="true"
-        layout="jumper, total, sizes, prev, pager, next"
-        :total="total"
-        @size-change="onSizeChange"
-        @current-change="onCurrentChange"
-        style="margin-top: 20px; justify-content: flex-end"
-    />
-
-    <!-- 添加编辑的抽屉 -->
-    <employee-edit ref="employeeEditRef" @success="onSuccess"></employee-edit>
-  </page-container>
-</template>
 
 <style lang="scss" scoped></style>

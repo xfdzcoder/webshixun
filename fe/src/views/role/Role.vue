@@ -1,3 +1,33 @@
+<template>
+  <page-container title="角色分类" >
+    <el-button @click="onAddRole" type="primary">添加角色</el-button>
+    <el-table v-loading="loading" :data="roleList" border style='width: 100%'>
+      <el-table-column type="index" label="序号" width="100"></el-table-column>
+      <el-table-column prop="id" label="角色ID"></el-table-column>
+      <el-table-column prop="name" label="角色名称"></el-table-column>
+      <el-table-column label="操作" >
+        <!-- row 就是 channelList 的一项， $index 下标 -->
+        <template #default="{ row, $index }">
+          <el-button
+            type="primary"
+            @click="onEditRole(row, $index)"
+          >编辑</el-button>
+          <el-button
+            type="danger"
+            @click="onDelRole(row, $index)"
+          >删除</el-button>
+        </template>
+      </el-table-column>
+
+      <template #empty>
+        <el-empty description="没有数据"></el-empty>
+      </template>
+    </el-table>
+
+    <role-edit ref="dialog" @success="onSuccess"></role-edit>
+  </page-container>
+</template>
+
 <script setup>
 import { ref } from 'vue'
 import { Edit, Delete } from '@element-plus/icons-vue'
@@ -36,43 +66,6 @@ const onSuccess = () => {
 }
 </script>
 
-<template>
-  <page-container title="角色分类">
-    <template #extra>
-      <el-button @click="onAddRole">添加角色</el-button>
-    </template>
 
-    <el-table v-loading="loading" :data="roleList" style="width: 100%">
-      <el-table-column type="index" label="序号" width="100"></el-table-column>
-      <el-table-column prop="id" label="角色ID"></el-table-column>
-      <el-table-column prop="name" label="角色名称"></el-table-column>
-      <el-table-column label="操作" width="150">
-        <!-- row 就是 channelList 的一项， $index 下标 -->
-        <template #default="{ row, $index }">
-          <el-button
-              :icon="Edit"
-              circle
-              plain
-              type="primary"
-              @click="onEditRole(row, $index)"
-          ></el-button>
-          <el-button
-              :icon="Delete"
-              circle
-              plain
-              type="danger"
-              @click="onDelRole(row, $index)"
-          ></el-button>
-        </template>
-      </el-table-column>
-
-      <template #empty>
-        <el-empty description="没有数据"></el-empty>
-      </template>
-    </el-table>
-
-    <role-edit ref="dialog" @success="onSuccess"></role-edit>
-  </page-container>
-</template>
 
 <style lang="scss" scoped></style>

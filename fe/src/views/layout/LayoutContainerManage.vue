@@ -1,18 +1,18 @@
 <script setup>
 import {
-  Management,
-  Promotion,
-  UserFilled,
-  User,
+  CaretBottom,
   Crop,
   EditPen,
+  Management,
+  Promotion,
   SwitchButton,
-  CaretBottom
+  User,
+  UserFilled
 } from '@element-plus/icons-vue'
 import avatar from '@/assets/default.png'
-import { useUserStore,useOKStore } from '@/stores'
-import {onMounted} from 'vue'
-import { useRouter } from "vue-router";
+import { useOKStore, useUserStore } from '@/stores'
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 const userStore = useUserStore()
 const router = useRouter()
@@ -61,89 +61,59 @@ const handleCommand = async (key) => {
 </script>
 
 <template>
-  <!--
-  el-menu 整个菜单组件
-    :default-active="$route.path"  配置默认高亮的菜单项
-    router  router选项开启，el-menu-item 的 index 就是点击跳转的路径
-
-  el-menu-item 菜单项
-    index="/article/channel" 配置的是访问的跳转路径，配合default-active的值，实现高亮
--->
-  <el-container class="layout-container">
-    <el-aside width="200px">
-      <div class="el-aside__logo"></div>
+  <el-container style='height: 1000px'>
+    <el-aside width='200px'>
+      <div class='el-aside__logo'></div>
       <el-menu
-          active-text-color="#ffd04b"
-          background-color="#232323"
-          :default-active="$route.path"
-          text-color="#fff"
-          router
+        active-text-color='#ffd04b'
+        :default-active='$route.path'
+        text-color='#1e1f22'
+        router
       >
 
-        <el-sub-menu index="/c">
+        <el-sub-menu index='/c'>
           <template #title>
-            <el-icon><UserFilled /></el-icon>
             <span>人事管理</span>
           </template>
-          <el-menu-item v-if="ok1" index="/dept">
-            <el-icon><Management /></el-icon>
+          <el-menu-item index='/department'>
             <span>部门管理</span>
           </el-menu-item>
-          <el-menu-item v-if="ok2" index="/employee">
-            <el-icon><Management /></el-icon>
+          <el-menu-item index='/employee'>
             <span>员工管理</span>
           </el-menu-item>
-          <el-menu-item v-if="ok10" index="/userManager">
-            <el-icon><Management /></el-icon>
+          <el-menu-item index='/userManager'>
             <span>用户管理</span>
           </el-menu-item>
-          <el-menu-item v-if="ok3" index="/holiday">
-            <el-icon><EditPen /></el-icon>
+          <el-menu-item index='/holiday'>
             <span>请假管理</span>
           </el-menu-item>
 
-          <el-menu-item v-if="ok11" index="/clz">
-            <el-icon><Management /></el-icon>
+          <el-menu-item index='/clz'>
             <span>班级管理</span>
           </el-menu-item>
-          <el-menu-item v-if="ok12" index="/student">
-            <el-icon><Management /></el-icon>
+          <el-menu-item index='/student'>
             <span>学生管理</span>
           </el-menu-item>
         </el-sub-menu>
-        <el-sub-menu index="/b">
+        <el-sub-menu index='/a'>
           <template #title>
-            <el-icon><UserFilled /></el-icon>
-            <span>财务管理</span>
-          </template>
-          <el-menu-item v-if="ok4" index="/reimburse">
-            <el-icon><Management /></el-icon>
-            <span>报销管理</span>
-          </el-menu-item>
-        </el-sub-menu>
-        <el-sub-menu index="/a">
-          <template #title>
-            <el-icon><UserFilled /></el-icon>
             <span>个人中心</span>
           </template>
-          <el-menu-item v-if="ok5" index="/user/email">
-            <el-icon><User /></el-icon>
+          <el-menu-item index='/user/email'>
             <span>基本资料</span>
           </el-menu-item>
-          <el-menu-item v-if="ok6" index="/user/avatar">
-            <el-icon><Crop /></el-icon>
-            <span>更换头像</span>
-          </el-menu-item>
-          <el-menu-item v-if="ok7" index="/user/password">
-            <el-icon><EditPen /></el-icon>
+          <el-menu-item index='/user/password'>
             <span>重置密码</span>
           </el-menu-item>
-          <el-menu-item v-if="ok8" index="/role">
-            <el-icon><Promotion /></el-icon>
+        </el-sub-menu>
+        <el-sub-menu index='/b'>
+          <template #title>
+            <span>系统管理</span>
+          </template>
+          <el-menu-item index='/role'>
             <span>角色管理</span>
           </el-menu-item>
-          <el-menu-item v-if="ok9" index="/permission">
-            <el-icon><UserFilled /></el-icon>
+          <el-menu-item index='/permission'>
             <span>权限管理</span>
           </el-menu-item>
         </el-sub-menu>

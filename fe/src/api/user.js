@@ -18,24 +18,18 @@ export const userGetMenuService = () => request.get('/common/getMenu')
 export const userUpdateInfoService = ({ id,  email }) =>
     request.put('/user/email', { id, email })
 
-// 更新用户头像
-export const userUpdateAvatarService = (avatar) =>
-    request.patch('/user/avatar', { avatar })
-
 // 更新用户密码
-export const userUpdatePasswordService = ({ old_pwd, new_pwd, re_pwd }) =>
-    request.patch('/user/password', { old_pwd, new_pwd, re_pwd })
+export const userUpdatePasswordService = ({ old_pwd, new_pwd, re_pwd, id }) =>
+  request.patch('/user/password', { oldPwd, newPwd, rePwd, id })
 
 //=========================================================================
 // 用户：获取所有用户
 export const getUserService = () => request.get('/user/list')
 // 用户：添加用户
-export const addUserService = (data) => request.post('/user/add', data)
+export const addUserService = (data) => request.post('/user', data)
 // 用户：编辑用户
 export const EditUserService = (data) =>
-    request.put('/user/info', data)
+  request.put(`/user`, data)
 // 用户：删除用户
 export const delUserService = (id) =>
-    request.delete('/user/del', {
-        params: { id }
-    })
+  request.delete(`/user/${id}`)

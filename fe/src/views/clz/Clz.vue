@@ -1,43 +1,28 @@
 <template>
   <div>
-    <h1>班级管理</h1>
-
     <el-button type="primary" @click="showDialog(null)">新增班级</el-button>
 
     <el-table
-      :data="table.records"
+      :data='table.records'
+      border style='width: 100%'
     >
-      <el-table-column label="编号" prop="no" />
-      <el-table-column label="名称" prop="name" />
-      <el-table-column label="班主任" prop="user" />
-      <el-table-column label="地址" prop="address" />
-      <el-table-column label="操作" width="150">
-        <template #default="{ row, $index }">
+      <el-table-column label='编号' prop='no' />
+      <el-table-column label='名称' prop='name' />
+      <el-table-column label='班主任' prop='user' />
+      <el-table-column label='地址' prop='address' />
+      <el-table-column label='操作' width='150'>
+        <template #default='{ row, $index }'>
           <el-button
-            :icon="Edit"
-            circle
-            plain
-            type="primary"
-            @click="showDialog(row, $index)"
+            type='primary'
+            @click='showDialog(row, $index)'
           ></el-button>
           <el-button
-            :icon="Delete"
-            circle
-            plain
             type="danger"
             @click="del(row, $index)"
           ></el-button>
         </template>
       </el-table-column>
     </el-table>
-
-    <el-pagination
-      :page-size="table.size"
-      :total="table.total"
-      :current-page="table.current"
-      @size-change="listAll"
-      @current-change="listAll"
-    />
 
     <el-dialog
       v-model="dialog.visible"
@@ -77,7 +62,6 @@
 <script setup>
 
 import { onMounted, reactive, ref } from 'vue'
-import { Delete, Edit } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { deleteById, edit, list, save } from '@/api/clz.js'
 

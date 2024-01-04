@@ -2,11 +2,7 @@
 import { ref } from 'vue'
 import DeptSelect from './DeptSelect.vue'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
-import {
-  employeePublishService,
-  employeeGetDetailService,
-  employeeEditService
-} from '@/api/employee.js'
+import { employeeEditService, employeeGetDetailService, employeePublishService } from '@/api/employee.js'
 
 // 控制抽屉显示隐藏
 const visibleDrawer = ref(false)
@@ -78,7 +74,7 @@ defineExpose({
 </script>
 
 <template>
-  <el-drawer
+  <el-dialog
       v-model="visibleDrawer"
       :title="formModel.id ? '编辑员工信息' : '添加员工'"
       direction="rtl"
@@ -117,7 +113,7 @@ defineExpose({
         <el-button @click="onPublish" type="primary">完成</el-button>
       </el-form-item>
     </el-form>
-  </el-drawer>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>

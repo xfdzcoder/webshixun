@@ -1,8 +1,50 @@
+<template>
+  <page-container title='用户管理'>
+
+    <div>
+      <el-button @click='onAddUser' type='primary'>添加用户</el-button>
+    </div>
+    <el-table v-loading='loading' :data='userList' border style='width: 100%'>
+      <el-table-column type='index' label='序号' width='100'></el-table-column>
+      <el-table-column prop='account' label='用户名称'></el-table-column>
+      <el-table-column prop='roleId' label='角色ID'>
+        <template v-slot='scope'>
+          <el-tag type='success' v-if="scope.row.roleId ==='1'">学生</el-tag>
+          <el-tag type='info' v-if="scope.row.roleId === '2'">老师</el-tag>
+          <el-tag type='danger' v-if="scope.row.roleId === '3'">管理员</el-tag>
+        </template>
+
+      </el-table-column>
+      <el-table-column label='操作'>
+        <!-- row 就是 channelList 的一项， $index 下标 -->
+        <template #default='{ row, $index }'>
+          <el-button
+            type='primary'
+            @click='onEditUser(row, $index)'
+          >编辑
+          </el-button>
+          <el-button
+            type='danger'
+            @click='onDelUser(row, $index)'
+          >删除
+          </el-button>
+        </template>
+      </el-table-column>
+
+      <template #empty>
+        <el-empty description='没有数据'></el-empty>
+      </template>
+    </el-table>
+
+    <user-edit ref='dialog' @success='onSuccess'></user-edit>
+  </page-container>
+</template>
 <script setup>
 import { ref } from 'vue'
-import { Edit, Delete } from '@element-plus/icons-vue'
-import { getUserService, delUserService } from '../../api/user.js'
+import { delUserService, getUserService } from '../../api/user.js'
 import UserEdit from './components/UserEdit.vue'
+import { ElMessageBox } from 'element-plus'
+
 const userList = ref([])
 const loading = ref(false)
 const dialog = ref()
@@ -36,43 +78,5 @@ const onSuccess = () => {
 }
 </script>
 
-<template>
-  <page-container title="用户管理">
-    <template #extra>
-      <el-button @click="onAddUser">添加用户</el-button>
-    </template>
-
-    <el-table v-loading="loading" :data="userList" style="width: 100%">
-      <el-table-column type="index" label="序号" width="100"></el-table-column>
-      <el-table-column prop="account" label="用户名称"></el-table-column>
-      <el-table-column prop="roleId" label="角色ID"></el-table-column>
-      <el-table-column label="操作" width="150">
-        <!-- row 就是 channelList 的一项， $index 下标 -->
-        <template #default="{ row, $index }">
-          <el-button
-              :icon="Edit"
-              circle
-              plain
-              type="primary"
-              @click="onEditUser(row, $index)"
-          ></el-button>
-          <el-button
-              :icon="Delete"
-              circle
-              plain
-              type="danger"
-              @click="onDelUser(row, $index)"
-          ></el-button>
-        </template>
-      </el-table-column>
-
-      <template #empty>
-        <el-empty description="没有数据"></el-empty>
-      </template>
-    </el-table>
-
-    <user-edit ref="dialog" @success="onSuccess"></user-edit>
-  </page-container>
-</template>
 
 <style lang="scss" scoped></style>
