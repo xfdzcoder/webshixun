@@ -12,3 +12,10 @@ spring:
       url: jdbc:mysql://115.159.49.90:1103/web_shixun
       username: root
       password: zrSGsql0827
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false

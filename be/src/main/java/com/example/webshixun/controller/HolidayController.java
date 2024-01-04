@@ -42,20 +42,6 @@ public class HolidayController {
                 .eq(! "".equals(status), Holiday::getStatus,status)
                 .eq(!"".equals(userNo), Holiday::getUserNo, userNo));
         return Result.success(list, "");
-
-    }
-    /**
-     * 获取假期列表
-     */
-    @GetMapping("/list1")
-    public Result<List<Holiday>> list1Holiday(@RequestParam("typeId") String typeId,
-                                             @RequestParam("status") String status) {
-
-        List<Holiday> list = holidayService.list(new LambdaQueryWrapper<Holiday>()
-                .eq(! "".equals(typeId), Holiday::getTypeId,typeId)
-                .eq(!"".equals(status), Holiday::getStatus, status));
-        return Result.success(list, "");
-
     }
 
     /**
@@ -88,16 +74,12 @@ public class HolidayController {
     @GetMapping("/{id}")
     public Result<HolidayResp> getHolidayDetail(@PathVariable("id") Long id) {
         Holiday holiday = holidayService.getById(id);
-        Integer typeId = holiday.getTypeId();
-        Config one = configService.getOne(new LambdaQueryWrapper<Config>()
-                .eq(Config::getId, typeId));
-        String name = one.getName();
 
         HolidayResp holidayResp = new HolidayResp();
         holidayResp.setId(holiday.getId());
         holidayResp.setNo(holiday.getNo());
         holidayResp.setUserNo(holiday.getUserNo());
-        holidayResp.setTypeId(name);
+        holidayResp.setTypeId(holiday.getTypeId());
         holidayResp.setBz(holiday.getBz());
         holidayResp.setStartTime(holiday.getStartTime());
         holidayResp.setEndTime(holiday.getEndTime());

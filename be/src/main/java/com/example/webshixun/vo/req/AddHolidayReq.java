@@ -1,5 +1,6 @@
 package com.example.webshixun.vo.req;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -21,8 +22,10 @@ public class AddHolidayReq {
     //请假事由
     private String bz;
     //开始时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;
     //结束时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
     //申请状态，1：草稿，2：提交，
     private String status;

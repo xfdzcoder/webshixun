@@ -57,35 +57,21 @@ onMounted(() => {
 
 // 定义请求参数对象
 const params = ref({
-  pagenum: 1, // 当前页
-  pagesize: 5, // 当前生效的每页条数
   typeId: '',
   status: '',
-  userNo: userStore.user.account
+  userNo: localStorage.getItem("userId")
 })
 
 // 基于params参数，获取文章列表
 const getHolidayList = () => {
   loading.value = true
-  if (useOk.ok8 || useOk.ok9) {
-    holidayGetListService1(params.value)
-      .then(res => {
-        holidayList.value = res.data.data.records
-        total.value = res.data.data.total
-      })
-      .finally(() => {
-        loading.value = false
-      })
-  }else {
-    holidayGetListService(params.value)
-      .then(res => {
-        holidayList.value = res.data.data.records
-        total.value = res.data.data.total
-      })
-      .finally(() => {
-        loading.value = false
-      })
-  }
+  holidayGetListService(params.value)
+    .then(res => {
+      holidayList.value = res.data.data
+    })
+    .finally(() => {
+      loading.value = false
+    })
 }
 
 // 处理分页逻辑

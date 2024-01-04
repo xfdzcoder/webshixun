@@ -76,7 +76,7 @@ const ok = useOKStore()
 const login = async () => {
   await form.value.validate()
   const res = await userLoginService(formModel.value)
-  localStorage.setItem('userId', res.data.data.user.id)
+  localStorage.setItem('userId', res.data.data.id)
   ElMessage.success('登录成功！！！')
   router.push('/')
 }

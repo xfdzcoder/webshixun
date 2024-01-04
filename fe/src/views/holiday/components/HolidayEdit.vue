@@ -7,23 +7,15 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import { holidayEditService, holidayGetDetailService, holidayPublishService } from '@/api/holiday.js'
 import { useOKStore, useUserStore } from '@/stores/index.js'
 import { ElMessage } from 'element-plus'
+import {getConfigService} from "@/api/config.js";
 // 控制抽屉显示隐藏
 const visibleDrawer = ref(false)
-const useOK = useOKStore()
-const userStore = useUserStore()
 const flag = ref(false)
-onMounted(() => {
-  if (useOK.ok8 || useOK.ok9) {
-    flag.value = true
-  } else {
-    flag.value = false
-}
-})
 // 默认数据
 const defaultForm = {
   id: '', //请假id
   no: '', // 请假编号
-  userNo: userStore.user.account, // 账户编号
+  userNo: localStorage.getItem("userId"),
   typeId: '', //请假类型
   bz: '', // 请假事由
   startTime: '', // 开始时间
@@ -40,24 +32,16 @@ const emit = defineEmits(['success'])
 const onPublish = async (state) => {
   // 将已发布还是草稿状态，存入 formModel
   formModel.value.status = state
-
-  // 注意：当前接口，需要的是 formData 对象
-  // 将普通对象 => 转换成 => formData对象
-  const fd = new FormData()
-  for (let key in formModel.value) {
-    fd.append(key, formModel.value[key])
-  }
-
   // 发请求
   if (formModel.value.id) {
       // 编辑操作
-      await holidayEditService(fd)
+      await holidayEditService(formModel.value)
       ElMessage.success('修改成功')
       visibleDrawer.value = false
       emit('success', 'edit')
   } else {
     // 添加操作
-    await holidayPublishService(fd)
+    await holidayPublishService(formModel.value)
     ElMessage.success('添加成功')
     visibleDrawer.value = false
     // 通知到父组件，添加成功了
@@ -84,9 +68,19 @@ const open = async (row) => {
   }
 }
 
+const configList = ref([])
+const getConfigList = async () => {
+  const res = await getConfigService()
+  configList.value = res.data.data
+}
+
 
 defineExpose({
   open
+})
+onMounted(() => {
+  //页面加载时就执行这个函数
+  getConfigList()
 })
 </script>
 
@@ -106,10 +100,17 @@ defineExpose({
         <el-input v-model="formModel.userNo" placeholder="请输入申请人" disabled></el-input>
       </el-form-item>
       <el-form-item label='请假类型' prop='typeId'>
-        <config-select
-          v-model='formModel.typeId'
-          width='100%'
-        ></config-select>
+        {{ formModel.typeId }}
+        <el-select
+            v-model="formModel.typeId"
+        >
+          <el-option
+              v-for="config in configList"
+              :key="config.id"
+              :label="config.name"
+              :value="config.id"
+          ></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label='请假事由' prop='bz'>
         <div class='editor'>
@@ -125,21 +126,19 @@ defineExpose({
         <el-date-picker
           v-model='formModel.startTime'
           type='datetime'
+          value-format="YYYY-MM-DD HH:mm:ss"
           placeholder='请选择开始时间' />
       </el-form-item>
       <el-form-item label='结束时间' prop='endTime'>
         <el-date-picker
           v-model='formModel.endTime'
           type='datetime'
+          value-format="YYYY-MM-DD HH:mm:ss"
           placeholder='请选择结束时间' />
-      </el-form-item>
-      <el-form-item label='审批状态' prop='noAgree' v-if='flag'>
-        <el-input v-model='formModel.noAgree' placeholder='请输入审批理由，同意或驳回'></el-input>
       </el-form-item>
 
       <el-form-item>
         <el-button @click="onPublish('已提交')" type='primary'>提交</el-button>
-        <el-button @click="onPublish('草稿')" type='info'>草稿</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>

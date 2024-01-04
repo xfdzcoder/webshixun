@@ -17,9 +17,7 @@ export const holidayPublishService = (data) => request.post('/holiday', data)
 
 // 假期：获取假期详情
 export const holidayGetDetailService = (id) =>
-    request.get('/holiday', {
-        params: { id }
-    })
+    request.get(`/holiday/${id}`)
 
 // 假期：编辑假期接口
 export const holidayEditService = (data) => request.put('/holiday', data)
@@ -27,4 +25,4 @@ export const holidayEditService = (data) => request.put('/holiday', data)
 
 // 假期：删除假期接口
 export const holidayDelService = (id) =>
-    request.delete('/holiday/delete', { params: { id } })
+    request.delete(`/holiday/${id}`)
