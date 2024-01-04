@@ -15,11 +15,11 @@
           <el-button
             type='primary'
             @click='showDialog(row, $index)'
-          ></el-button>
+          >编辑</el-button>
           <el-button
             type="danger"
             @click="del(row, $index)"
-          ></el-button>
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -72,10 +72,7 @@ defineOptions({
 const dialogFormRef = ref()
 const table = ref({
   records: [],
-  loading: false,
-  current: 1,
-  size: 10,
-  total: 0
+  loading: false
 })
 const dialog = reactive({
   visible: false,
@@ -124,13 +121,9 @@ const closeDialog = () => {
 
 const listAll = async () => {
   table.value.loading = true
-  const data = {
-    pageNum: table.value.current,
-    pageSize: table.value.size
-  }
-  list(data)
+  list()
     .then(resp => {
-      table.value = resp.data.data
+      table.value.records = resp.data.data
       table.value.loading = false
     })
 }
