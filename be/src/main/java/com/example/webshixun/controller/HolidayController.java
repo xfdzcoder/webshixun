@@ -97,11 +97,7 @@ public class HolidayController {
         Holiday holiday = holidayService.getById(updateHoliday.getId());
         holiday.setNo(updateHoliday.getNo());
         holiday.setUserNo(updateHoliday.getUserNo());
-        Integer typeId = Integer.valueOf(updateHoliday.getTypeId());
-        holiday.setTypeId(typeId);
-        Config one = configService.getOne(new LambdaQueryWrapper<Config>()
-                .eq(Config::getName, updateHoliday.getTypeId()));
-        holiday.setTypeId(Integer.parseInt(String.valueOf(one.getId())));
+        holiday.setTypeId(updateHoliday.getTypeId());
         holiday.setBz(updateHoliday.getBz());
         holiday.setStartTime(updateHoliday.getStartTime());
         holiday.setEndTime(updateHoliday.getEndTime());
@@ -113,8 +109,8 @@ public class HolidayController {
     /**
      * 删除假期
      */
-    @DeleteMapping("/delete")
-    public Result<String> delete(@RequestParam("id") Long id) {
+    @DeleteMapping("/{id}")
+    public Result<String> delete(@PathVariable("id") Long id) {
         holidayService.removeById(id);
         return Result.success("删除成功");
     }

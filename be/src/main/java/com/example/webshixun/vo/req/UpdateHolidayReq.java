@@ -21,7 +21,7 @@ public class UpdateHolidayReq {
     //账户编号
     private String userNo;
     //请假类型，这些数据都在配置表中，1：事假，2：婚假，3：年假，4：调休，5：病假，6：丧假
-    private String typeId;
+    private Integer typeId;
     //请假事由
     private String bz;
     //开始时间
