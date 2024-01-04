@@ -1,9 +1,7 @@
 import request from '@/utils/request'
 // 假期：获取假期列表
 export const holidayGetListService = (params) => {
-    return request.get('/holiday/list', {
-        params
-    })
+    return request.get('/holiday/list')
 }
 // 假期：获取所有假期列表
 export const holidayGetListService1 = (params) => {

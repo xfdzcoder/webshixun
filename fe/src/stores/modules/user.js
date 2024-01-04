@@ -13,8 +13,8 @@ export const useUserStore = defineStore('big-user', () => {
     }
 
     const user = ref({})
-    const getUser = async () => {
-        const res = await userGetInfoService() // 请求获取数据
+    const getUser = async (id) => {
+        const res = await userGetInfoService(id) // 请求获取数据
         user.value = res.data.data
     }
 

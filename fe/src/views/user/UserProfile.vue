@@ -53,9 +53,11 @@ const submitForm = async () => {
   // 等待校验结果
   await formRef.value.validate()
   // 提交修改
+  console.log(form.value)
   await userUpdateInfoService(form.value)
   // 通知 user 模块，进行数据的更新
-  getUser()
+  const userId = localStorage.getItem("userId")
+  getUser(userId)
   // 提示用户
   ElMessage.success('修改成功')
 }

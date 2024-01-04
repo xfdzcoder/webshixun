@@ -12,6 +12,9 @@ spring:
       url: jdbc:mysql://115.159.49.90:1103/web_shixun
       username: root
       password: zrSGsql0827
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mvc:
     date-format: yyyy-MM-dd HH:mm:ss
   jackson:

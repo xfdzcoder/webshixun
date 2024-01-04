@@ -4,7 +4,6 @@ import { Lock, User } from '@element-plus/icons-vue'
 import { ref, watch } from 'vue'
 import { useOKStore, useUserStore } from '@/stores'
 import { useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
 
 const isRegister = ref(true)
 const form = ref()
@@ -12,23 +11,12 @@ const form = ref()
 
 //整个的用于提交的form数据对象
 const formModel = ref({
-  account: '',
-  password: '',
+  account: 'admin',
+  password: '123456',
   repassword: '',
   roleId: '1'
 })
 
-// 整个表单的校验规则
-// 1. 非空校验 required: true      message消息提示，  trigger触发校验的时机 blur(失去焦点时触发) change(值改变时触发)
-// 2. 长度校验 min:xx, max: xx
-// 3. 正则校验 pattern: 正则规则    \S 非空字符
-// 4. 自定义校验 => 自己写逻辑校验 (校验函数)
-//    validator: (rule, value, callback)
-//    (1) rule  当前校验规则相关的信息
-//    (2) value 所校验的表单元素目前的表单值
-//    (3) callback 无论成功还是失败，都需要 callback 回调
-//        - callback() 校验成功
-//        - callback(new Error(错误信息)) 校验失败
 const rules = {
   account: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -74,12 +62,18 @@ const userStore = useUserStore()
 const router = useRouter()
 const ok = useOKStore()
 const login = async () => {
-  await form.value.validate()
-  const res = await userLoginService(formModel.value)
-  localStorage.setItem('userId', res.data.data.id)
-  ElMessage.success('登录成功！！！')
-  router.push('/')
-}
+  await form.value.validate();
+
+  try {
+    const res = await userLoginService(formModel.value);
+    console.log(res);
+    localStorage.setItem('userId', res.data.data.id);
+    ElMessage.success('登录成功！！！');
+    router.push('/');
+  } catch (error) {
+  }
+};
+
 
 // 切换的时候，重置表单内容
 watch(isRegister, () => {
@@ -94,24 +88,6 @@ watch(isRegister, () => {
 </script>
 
 <template>
-  <!--
-       1.结构相关
-       el-row表示一行，一行分成24份
-       el-col表示列
-       (1):span="12" 代表在一行中，占12份（刚好50%）
-       (2):span="6" 代表在一行中，占6份（刚好25%）
-       (3):offset="3"代表在一行中，左侧margin（空出）的份数
-
-       el-form 整个表单组件
-       el-form-item 表单的一行 （一个表单域）
-       el-input 表单元素（输入框）
-       2.校验相关
-       (1)el-form => :model="ruleForm"       绑定的整个form的数据对象
-       (2)el-form => :rules="rules"          绑定的整个rules规则对象
-       (3)表单元素 => v-model="ruleForm.xxx"   给表单元素，绑定form的子属性
-       (4)el-form-item =>  prop配置生效的是哪个校验规则(和rules中的字段要对应)
-  -->
-
   <el-row class="login-page">
     <el-col :span="12" class="bg"></el-col>
     <el-col :span="6" :offset="3" class="form">

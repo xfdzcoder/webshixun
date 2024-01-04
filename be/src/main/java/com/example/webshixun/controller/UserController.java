@@ -36,7 +36,7 @@ public class UserController {
         User one = userService.getOne(new LambdaQueryWrapper<User>()
                 .eq(User::getId, id));
         one.setEmail(email);
-        userService.updateById(one);
+        boolean b = userService.updateById(one);
         return Result.success();
     }
 

@@ -7,13 +7,14 @@
 
     <!-- 表格区域 -->
     <el-table :data='holidayList' v-loading='loading' border style='width: 100%'>
-      <el-table-column label='请假编号' prop='no'/>
-      <el-table-column label='申请人' prop='userNo'/>
-      <el-table-column label='请假类型' prop='typeId'></el-table-column>
-      <el-table-column label='请假事由' prop='bz'/>
-      <el-table-column label='开始时间' prop='startTime'/>
-      <el-table-column label='结束时间' prop='endTime'/>
-      <el-table-column label='提交时间' prop='createTime'/>
+      <el-table-column label='请假编号' prop='no' />
+      <el-table-column label='申请人' prop='userNo' />
+      <el-table-column label='请假类型' prop='typeId'>
+      </el-table-column>
+      <el-table-column label='请假事由' prop='bz' />
+      <el-table-column label='开始时间' prop='startTime' />
+      <el-table-column label='结束时间' prop='endTime' />
+      <el-table-column label='提交时间' prop='createTime' />
       <!-- 利用作用域插槽 row 可以获取当前行的数据 => v-for 遍历 item -->
       <el-table-column label='操作'>
         <template #default='{ row }'>
@@ -35,12 +36,11 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue'
-import { Delete, Edit } from '@element-plus/icons-vue'
-import ConfigSelect from './components/ConfigSelect.vue'
+import { Delete } from '@element-plus/icons-vue'
 import HolidayEdit from './components/HolidayEdit.vue'
-import { holidayDelService, holidayGetListService, holidayGetListService1 } from '@/api/holiday.js'
-import { formatTime, formatTime1 } from '@/utils/format.js'
+import { holidayDelService, holidayGetListService } from '@/api/holiday.js'
 import { useOKStore, useUserStore } from '@/stores/index.js'
+import { getConfigService } from '@/api/config.js'
 
 const holidayList = ref([]) //请假列表
 const total = ref(0) // 总条数
@@ -57,23 +57,31 @@ onMounted(() => {
 
 // 定义请求参数对象
 const params = ref({
-  typeId: '',
-  status: '',
-  userNo: localStorage.getItem("userId")
+  typeId: undefined,
+  status: undefined,
+  userNo: localStorage.getItem('userId')
 })
 
 // 基于params参数，获取文章列表
+const configS = ref()
 const getHolidayList = () => {
   loading.value = true
-  holidayGetListService(params.value)
+  holidayGetListService()
     .then(res => {
+      console.log(res)
       holidayList.value = res.data.data
+      // config()
     })
     .finally(() => {
       loading.value = false
     })
 }
-
+const config = () => {
+  console.log("diaoyong")
+  const configService = getConfigService()
+  console.log("config",configS.value)
+  configS.value = configService.data.data
+}
 // 处理分页逻辑
 const onSizeChange = (size) => {
   // console.log('当前每页条数', size)

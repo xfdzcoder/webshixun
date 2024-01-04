@@ -44,6 +44,7 @@ const dialog = ref()
 const getDeptList = async () => {
   loading.value = true
   const res = await getDeptService()
+  console.log("部门",res)
   deptList.value = res.data.data
   loading.value = false
 }

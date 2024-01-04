@@ -65,6 +65,7 @@ const getEmployeeList = () => {
   loading.value = true
   employeeGetListService(params.value)
     .then(res => {
+      console.log(res)
       employeeList.value = res.data.data
     })
     .finally(() => {

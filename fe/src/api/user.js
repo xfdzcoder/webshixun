@@ -9,7 +9,7 @@ export const userLoginService = ({ account, password }) =>
     request.post('/common/login', { account, password })
 
 // 获取用户基本信息
-export const userGetInfoService = () => request.get('/common/userinfo')
+export const userGetInfoService = (id) => request.get(`/common/userinfo/${id}`)
 
 // 获取用户菜单权限信息
 export const userGetMenuService = () => request.get('/common/getMenu')

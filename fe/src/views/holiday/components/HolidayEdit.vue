@@ -97,10 +97,9 @@ onMounted(() => {
         <el-input v-model='formModel.no' placeholder='请输入请假编号'></el-input>
       </el-form-item>
       <el-form-item label="申请人" prop="userNo">
-        <el-input v-model="formModel.userNo" placeholder="请输入申请人" disabled></el-input>
+        <el-input v-model="formModel.userNo" placeholder="请输入申请人"></el-input>
       </el-form-item>
       <el-form-item label='请假类型' prop='typeId'>
-        {{ formModel.typeId }}
         <el-select
             v-model="formModel.typeId"
         >
@@ -126,14 +125,14 @@ onMounted(() => {
         <el-date-picker
           v-model='formModel.startTime'
           type='datetime'
-          value-format="YYYY-MM-DD HH:mm:ss"
+          value-format="YYYY-MM-DDTHH:mm:ss"
           placeholder='请选择开始时间' />
       </el-form-item>
       <el-form-item label='结束时间' prop='endTime'>
         <el-date-picker
           v-model='formModel.endTime'
           type='datetime'
-          value-format="YYYY-MM-DD HH:mm:ss"
+          value-format="YYYY-MM-DDTHH:mm:ss"
           placeholder='请选择结束时间' />
       </el-form-item>
 

@@ -4,7 +4,7 @@
 
     <el-button type="primary" @click="showDialog(null)" style='margin-left: 500px'>新增学生</el-button>
 
-    <el-table :data="table.records"       border style='width: 100%'>
+    <el-table :data="table.records"   border style='width: 100%'>
       <el-table-column label="学号" prop="no" />
       <el-table-column label="姓名" prop="name" />
       <el-table-column label="班级编号" prop="classNo" />
@@ -14,7 +14,7 @@
       <el-table-column label="联系方式" prop="phone" />
       <el-table-column label="家庭住址" prop="address" />
       <el-table-column label="创建时间" prop="createTime" />
-      <el-table-column label="操作" >
+      <el-table-column label="操作" width='200px'>
         <template #default="{ row, $index }">
           <el-button
             type="primary"
@@ -153,7 +153,10 @@ const listAll = async () => {
   }
   list(data)
     .then(resp => {
+      console.log('xues',resp)
       table.value = resp.data.data
+      table.value.records = resp.data.data
+      console.log('xues',resp)
       table.value.loading = false
     })
 }

@@ -27,9 +27,8 @@ public class EmployeeController {
      * 查询所有数据
      */
     @GetMapping("/list")
-    public Result<List<Employee>> selectAll(@RequestParam("deptId") Integer deptId) {
-        List<Employee> list = employeeService.list(new LambdaQueryWrapper<Employee>()
-                .eq(Employee::getDeptId, deptId));
+    public Result<List<Employee>> selectAll() {
+        List<Employee> list = employeeService.list();
         return Result.success(list, "");
     }
 

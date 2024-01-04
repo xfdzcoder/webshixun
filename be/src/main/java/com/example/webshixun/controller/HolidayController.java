@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @CrossOrigin
@@ -34,13 +35,8 @@ public class HolidayController {
      * 获取假期列表
      */
     @GetMapping("/list")
-    public Result<List<Holiday>> listHoliday(@RequestParam("typeId") String typeId,
-                                             @RequestParam("status") String status,
-                                             @RequestParam("userNo") String userNo) {
-        List<Holiday> list = holidayService.list(new LambdaQueryWrapper<Holiday>()
-                .eq(! "".equals(typeId), Holiday::getTypeId,typeId)
-                .eq(! "".equals(status), Holiday::getStatus,status)
-                .eq(!"".equals(userNo), Holiday::getUserNo, userNo));
+    public Result<List<Holiday>> listHoliday() {
+        List<Holiday> list = holidayService.list();
         return Result.success(list, "");
     }
 
@@ -63,6 +59,7 @@ public class HolidayController {
         holiday.setEndTime(req.getEndTime());
         holiday.setStatus(req.getStatus());
         holiday.setNoAgree(req.getNoAgree());
+        holiday.setCreateTime(LocalDateTime.now());
         holidayService.save(holiday);
         return Result.success("添加成功");
     }

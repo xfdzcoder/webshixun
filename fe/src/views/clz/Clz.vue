@@ -10,7 +10,7 @@
       <el-table-column label='名称' prop='name' />
       <el-table-column label='班主任' prop='user' />
       <el-table-column label='地址' prop='address' />
-      <el-table-column label='操作' width='150'>
+      <el-table-column label='操作'>
         <template #default='{ row, $index }'>
           <el-button
             type='primary'

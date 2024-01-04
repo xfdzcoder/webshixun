@@ -8,6 +8,7 @@ import com.example.webshixun.entity.User;
 import com.example.webshixun.service.StudentService;
 import com.example.webshixun.service.UserService;
 import com.example.webshixun.utils.PasswordUtil;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -77,5 +78,11 @@ public class CommonController {
             }
         }
         return Result.success(user, "登录成功");
+    }
+
+    @GetMapping("userinfo/{id}")
+    public Result<User> userinfo(@Param("id") Long id){
+        User byId = userService.getById(id);
+        return Result.success(byId,"获取信息成功！");
     }
 }
