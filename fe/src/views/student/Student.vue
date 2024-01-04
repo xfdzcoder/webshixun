@@ -2,7 +2,7 @@
   <div>
     <h1>学生管理</h1>
 
-    <el-button type="primary" @click="showDialog(null)" style='margin-left: 500px'>新增学生</el-button>
+    <el-button type="primary" @click="showDialog(null)">新增学生</el-button>
 
     <el-table :data="table.records"       border style='width: 100%'>
       <el-table-column label="学号" prop="no" />
@@ -87,10 +87,7 @@ defineOptions({
 const dialogFormRef = ref()
 const table = ref({
   records: [],
-  loading: false,
-  current: 1,
-  size: 10,
-  total: 0
+  loading: false
 })
 const dialog = reactive({
   visible: false,
@@ -147,13 +144,10 @@ const closeDialog = () => {
 
 const listAll = async () => {
   table.value.loading = true
-  const data = {
-    pageNum: table.value.current,
-    pageSize: table.value.size
-  }
+  const data = {}
   list(data)
     .then(resp => {
-      table.value = resp.data.data
+      table.value.records = resp.data.data
       table.value.loading = false
     })
 }
