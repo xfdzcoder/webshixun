@@ -6,12 +6,7 @@ import com.example.webshixun.mapper.ClassMapper;
 import com.example.webshixun.service.ClzService;
 import org.springframework.stereotype.Service;
 
-/**
- * (Class)表服务实现类
- *
- * @author makejava
- * @since 2024-01-04 18:28:32
- */
+
 @Service("classService")
 public class ClzServiceImpl extends ServiceImpl<ClassMapper, Clz> implements ClzService {
 

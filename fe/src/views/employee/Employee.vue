@@ -97,7 +97,7 @@ const onCurrentChange = (page) => {
 
 // 搜索逻辑 => 按照最新的条件，重新检索，从第一页开始展示
 const onSearch = () => {
-  params.value.pagenum = 1 // 重置页面
+  // params.value.pagenum = 1 // 重置页面
   getEmployeeList()
 }
 

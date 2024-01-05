@@ -44,7 +44,7 @@ public class UserController {
      * 更新用户密码
      */
     @PatchMapping("/password")
-    public Result<String> updateUserPassword(@RequestBody UpdatepwdReq req, HttpServletRequest request){
+    public Result<String> updateUserPassword(@RequestBody UpdatepwdReq req){
         String oldPwd = req.getOldPwd();
         String newPwd = req.getNewPwd();
 

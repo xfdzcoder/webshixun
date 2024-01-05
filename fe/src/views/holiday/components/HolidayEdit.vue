@@ -97,7 +97,7 @@ onMounted(() => {
         <el-input v-model='formModel.no' placeholder='请输入请假编号'></el-input>
       </el-form-item>
       <el-form-item label="申请人" prop="userNo">
-        <el-input v-model="formModel.userNo" placeholder="请输入申请人"></el-input>
+        <el-input :disabled="true" v-model="formModel.userNo" placeholder="请输入申请人"></el-input>
       </el-form-item>
       <el-form-item label='请假类型' prop='typeId'>
         <el-select

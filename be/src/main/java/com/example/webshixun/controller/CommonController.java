@@ -26,8 +26,6 @@ public class CommonController {
 
     /**
      * 用户注册
-     * @param user
-     * @return
      */
     @PostMapping("/register")
     public Result<String> register(@RequestBody User user){

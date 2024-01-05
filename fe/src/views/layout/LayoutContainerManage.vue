@@ -60,9 +60,7 @@
     </el-aside>
     <el-container>
       <el-header>
-        <div>欢迎用户：<strong>{{
-            userStore.user.account
-          }}</strong></div>
+        <div>欢迎用户</div>
         <el-dropdown placement="bottom-end" @command="handleCommand">
           <!--          展示给用户，默认看到的内容-->
           <span class="el-dropdown__box">

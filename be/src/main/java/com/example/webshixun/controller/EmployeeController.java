@@ -1,7 +1,6 @@
 package com.example.webshixun.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.webshixun.common.Result;
 import com.example.webshixun.entity.Employee;
 import com.example.webshixun.service.EmployeeService;
